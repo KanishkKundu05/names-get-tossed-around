@@ -19,15 +19,99 @@
             font-family: Arial, Helvetica, sans-serif;
         }
 
+        main {
+            padding: 32px 20px;
+            text-align: center;
+        }
+
         h1 {
             margin: 0;
             font-size: clamp(32px, 8vw, 88px);
             font-weight: 700;
             letter-spacing: 0;
         }
+
+        .launch-date {
+            margin: 20px 0 36px;
+            color: #666666;
+            font-size: 14px;
+        }
+
+        .countdown {
+            display: flex;
+            justify-content: center;
+            gap: clamp(16px, 5vw, 48px);
+            margin: 0;
+        }
+
+        .countdown div {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .countdown dt {
+            order: 1;
+            color: #666666;
+            font-size: 10px;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+        }
+
+        .countdown dd {
+            margin: 0;
+            min-width: 2ch;
+            font-size: clamp(28px, 7vw, 56px);
+            font-weight: 700;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .countdown[hidden] {
+            display: none;
+        }
     </style>
 </head>
 <body>
-    <h1>COMING SOON.</h1>
+    <main>
+        <h1 id="headline">COMING SOON.</h1>
+        <p class="launch-date">
+            <time id="launch-date" datetime="2026-11-09T00:00:00-05:00">November 9, 2026 &middot; 12:00 AM EST</time>
+        </p>
+        <dl class="countdown" aria-label="Time until launch" hidden>
+            <div><dt>Days</dt><dd id="days">00</dd></div>
+            <div><dt>Hours</dt><dd id="hours">00</dd></div>
+            <div><dt>Minutes</dt><dd id="minutes">00</dd></div>
+            <div><dt>Seconds</dt><dd id="seconds">00</dd></div>
+        </dl>
+    </main>
+    <script>
+        const launchTime = Date.parse(document.getElementById('launch-date').dateTime);
+        const countdown = document.querySelector('.countdown');
+        const units = ['days', 'hours', 'minutes', 'seconds'].map(id => document.getElementById(id));
+        let timer;
+
+        function updateCountdown() {
+            const remaining = Math.max(0, Math.ceil((launchTime - Date.now()) / 1000));
+            const values = [
+                Math.floor(remaining / 86400),
+                Math.floor(remaining / 3600) % 24,
+                Math.floor(remaining / 60) % 60,
+                remaining % 60
+            ];
+
+            units.forEach((unit, index) => {
+                unit.textContent = String(values[index]).padStart(2, '0');
+            });
+            countdown.hidden = false;
+
+            if (remaining === 0) {
+                document.getElementById('headline').textContent = 'THE WAIT IS OVER.';
+                clearInterval(timer);
+            }
+        }
+
+        timer = setInterval(updateCountdown, 1000);
+        updateCountdown();
+    </script>
 </body>
 </html>
