@@ -69,6 +69,34 @@
         .countdown[hidden] {
             display: none;
         }
+
+        body.launched {
+            background: #c90000;
+            color: #ffffff;
+            animation: launch-flash 2s step-end infinite;
+        }
+
+        body.launched .launch-date,
+        body.launched .countdown dt {
+            color: inherit;
+        }
+
+        @keyframes launch-flash {
+            0%, 100% {
+                background: #c90000;
+                color: #ffffff;
+            }
+            50% {
+                background: #ffffff;
+                color: #c90000;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            body.launched {
+                animation: none;
+            }
+        }
     </style>
 </head>
 <body>
@@ -105,6 +133,7 @@
             countdown.hidden = false;
 
             if (remaining === 0) {
+                document.body.classList.add('launched');
                 document.getElementById('headline').textContent = 'THE WAIT IS OVER.';
                 clearInterval(timer);
             }
