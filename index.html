@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sentry - Coming Soon</title>
+    <title>Sentry - Countdown</title>
     <style>
         html,
         body {
@@ -24,15 +24,8 @@
             text-align: center;
         }
 
-        h1 {
-            margin: 0;
-            font-size: clamp(32px, 8vw, 88px);
-            font-weight: 700;
-            letter-spacing: 0;
-        }
-
         .launch-date {
-            margin: 20px 0 36px;
+            margin: 36px 0 0;
             color: #666666;
             font-size: 14px;
         }
@@ -101,16 +94,15 @@
 </head>
 <body>
     <main>
-        <h1 id="headline">COMING SOON.</h1>
-        <p class="launch-date">
-            <time id="launch-date" datetime="2026-11-09T00:00:00-05:00">November 9, 2026 &middot; 12:00 AM EST</time>
-        </p>
         <dl class="countdown" aria-label="Time until launch" hidden>
             <div><dt>Days</dt><dd id="days">00</dd></div>
             <div><dt>Hours</dt><dd id="hours">00</dd></div>
             <div><dt>Minutes</dt><dd id="minutes">00</dd></div>
             <div><dt>Seconds</dt><dd id="seconds">00</dd></div>
         </dl>
+        <p class="launch-date">
+            <time id="launch-date" datetime="2026-11-09T00:00:00-05:00">November 9, 2026 &middot; 12:00 AM EST</time>
+        </p>
     </main>
     <script>
         const launchTime = Date.parse(document.getElementById('launch-date').dateTime);
@@ -134,7 +126,6 @@
 
             if (remaining === 0) {
                 document.body.classList.add('launched');
-                document.getElementById('headline').textContent = 'THE WAIT IS OVER.';
                 clearInterval(timer);
             }
         }
